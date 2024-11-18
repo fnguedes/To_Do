@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	ScrollView,
 	Text,
@@ -11,6 +11,8 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Foundation from "@expo/vector-icons/Foundation";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import styles from "./style";
 import { Task } from "../components/task";
 import { globalColors } from "../../GlobalStyles";
@@ -22,10 +24,7 @@ export interface TypeTask {
 }
 
 export function Home() {
-	const [tasklist, setTasklist] = useState<TypeTask[]>([
-		{ name: "fellipe", done: false, id: 1 },
-		{ name: "leticia", done: false, id: 2 },
-	]);
+	const [tasklist, setTasklist] = useState<TypeTask[]>([]);
 	const [newTask, setNewTask] = useState<string>("");
 
 	function handleTask(id: number) {
@@ -53,6 +52,30 @@ export function Home() {
 			setNewTask("");
 		}
 	}
+
+	useEffect(() => {
+		const getData = async () => {
+			try {
+				const jsonValue = await AsyncStorage.getItem("my-tasks");
+				setTasklist(jsonValue != null ? JSON.parse(jsonValue) : []);
+			} catch (e) {
+				// error reading value
+			}
+		};
+		getData();
+	}, []);
+
+	useEffect(() => {
+		const storeData = async () => {
+			try {
+				const jsonValue = JSON.stringify(tasklist);
+				await AsyncStorage.setItem("my-tasks", jsonValue);
+			} catch (e) {
+				// saving error
+			}
+		};
+		storeData();
+	}, [tasklist]);
 
 	return (
 		<View style={styles.container}>
