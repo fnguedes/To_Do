@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import {
+	Image,
+	Linking,
 	ScrollView,
 	Text,
 	TextInput,
@@ -151,6 +153,17 @@ export function Home() {
 					})}
 				</ScrollView>
 			)}
+
+			<TouchableOpacity
+				onPress={() => {
+					Linking.openURL(
+						"https://www.linkedin.com/in/fellipe-nascimento-guedes-/",
+					);
+				}}
+				activeOpacity={0.7}
+			>
+				<Image source={require("../assets/Logo.png")} style={styles.image} />
+			</TouchableOpacity>
 		</View>
 	);
 }

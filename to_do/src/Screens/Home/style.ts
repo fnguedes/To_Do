@@ -101,4 +101,11 @@ export default StyleSheet.create({
 		color: globalColors.cinzaClaro,
 		marginTop: 5,
 	},
+	image: {
+		width: 40,
+		height: 40,
+		position: "absolute",
+		bottom: 15,
+		left: 15,
+	},
 });
